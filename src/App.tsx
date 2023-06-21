@@ -5,10 +5,13 @@ import { Todolist } from "./Todolist";
 function App() {
   return (
     <div className="App">
-      <Todolist />
-      <Todolist />
+      <Todolist title="What to learn" />
+      <Todolist title="Movies" />
+      <Todolist title="Songs" />
 
-      <Todolist />
+      <input type="checkbox" />
+      <input type="date" />
+      <input placeholder="It-incubator" />
     </div>
   );
 }
