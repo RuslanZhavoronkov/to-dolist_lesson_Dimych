@@ -1,7 +1,15 @@
 import React from "react";
 
+//Создадим тип объектов массивов task1, task2
+export type TaskType = {
+  id: number;
+  title: string;
+  isDone: boolean;
+};
+
 type PropsType = {
   title: string;
+  tasks: Array<TaskType>; //Ждем массив объектов типа TaskType
 };
 
 export function Todolist(props: PropsType) {
@@ -14,16 +22,16 @@ export function Todolist(props: PropsType) {
       </div>
       <ul>
         <li>
-          <input type="checkbox" checked={true} />
-          <span>CSS&HTML</span>
+          <input type="checkbox" checked={props.tasks[0].isDone} />
+          <span>{props.tasks[0].title}</span>
         </li>
         <li>
-          <input type="checkbox" checked={true} />
-          <span>JS</span>
+          <input type="checkbox" checked={props.tasks[1].isDone} />
+          <span>{props.tasks[1].title}</span>
         </li>
         <li>
-          <input type="checkbox" checked={false} />
-          <span>React</span>
+          <input type="checkbox" checked={props.tasks[2].isDone} />
+          <span>{props.tasks[2].title}</span>
         </li>
       </ul>
       <div>
