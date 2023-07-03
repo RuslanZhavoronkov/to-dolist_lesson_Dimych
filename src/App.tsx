@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { v1 } from "uuid";
 import "./App.css";
 import { TaskType, Todolist } from "./Todolist";
 
@@ -7,17 +8,25 @@ export type FilterValuesType = "All" | "Completed" | "Active";
 function App() {
   //Создадим массивы задач
   let [tasks, setTasks] = useState<Array<TaskType>>([
-    { id: 1, title: "HTML&CSS", isDone: true },
-    { id: 2, title: "JS", isDone: true },
-    { id: 3, title: "ReactJS", isDone: false },
-    { id: 4, title: "Redux", isDone: false },
+    { id: v1(), title: "HTML&CSS", isDone: true },
+    { id: v1(), title: "JS", isDone: true },
+    { id: v1(), title: "ReactJS", isDone: false },
+    { id: v1(), title: "Redux", isDone: false },
   ]);
+  console.log(tasks);
 
   let [filter, setFilter] = useState<FilterValuesType>("All");
 
   //Функция обработчик нажатия кнопки "x"(логическая функция)
-  function removeTask(id: number) {
+  function removeTask(id: string) {
     setTasks(tasks.filter((t) => t.id !== id));
+  }
+
+  //Функция добавляющая новую таску(объект) в массив
+  function addTask(title:string) {
+    let newTask = { id: v1(), title: title, isDone: false };
+    let newTasks = [newTask, ...tasks]; //создали новый массив объектов
+    setTasks(newTasks);
   }
 
   //Функция обработчик нажатия кнопок "All", "Completed", "Active"(логическая функция)
@@ -41,6 +50,7 @@ function App() {
         tasks={tasksForTodolist}
         removeTask={removeTask}
         changeFilter={changeFilter}
+        addTask={addTask}
       />
     </div>
   );
