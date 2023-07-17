@@ -13,9 +13,21 @@ function App() {
     { id: v1(), title: "ReactJS", isDone: false },
     { id: v1(), title: "Redux", isDone: false },
   ]);
-  console.log(tasks);
+ 
 
   let [filter, setFilter] = useState<FilterValuesType>("All");
+
+//Функция обработчик, поставленного флажка в checkbox input
+function changeStatus (taskId:string, isDone:boolean) {
+let task = tasks.find(t => t.id === taskId)  //Если найдем по id таску, то запишем ее в переменную таску
+if(task) { //Если таска нашлась, то поменяй ее значение свойства isDone на на чекнутое 
+  task.isDone = isDone
+}
+
+setTasks([...tasks]); //Возьми новый массив обратно с измененной таской
+}
+
+
 
   //Функция обработчик нажатия кнопки "x"(логическая функция)
   function removeTask(id: string) {
@@ -51,6 +63,8 @@ function App() {
         removeTask={removeTask}
         changeFilter={changeFilter}
         addTask={addTask}
+        changeTaskStatus = {changeStatus}
+        filter={filter}
       />
     </div>
   );
