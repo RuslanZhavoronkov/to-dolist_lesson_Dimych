@@ -3,6 +3,8 @@ import { FilterValuesType } from "./App";
 import s from './Todolist.module.css'
 import { AddItemForm } from "./AddItemForm";
 import { EditableSpan } from "./EditableSpan";
+import { Button, Checkbox, IconButton } from "@material-ui/core";
+import { Delete } from "@material-ui/icons";
 
 //Создадим тип объектов массивов task1, task2
 export type TaskType = {
@@ -21,8 +23,8 @@ type PropsType = {
   changeTaskStatus: (taskId: string, isDone: boolean, todolistId: string) => void
   filter: FilterValuesType
   removeTodolist: (todolistId: string) => void
-  changeTaskTitle:(id: string, newTitle: string, todolistId: string) => void
-  changeTodolistTitle:(todolistId: string, newTitle: string) => void
+  changeTaskTitle: (id: string, newTitle: string, todolistId: string) => void
+  changeTodolistTitle: (todolistId: string, newTitle: string) => void
 };
 
 export function Todolist(props: PropsType) {
@@ -45,11 +47,11 @@ export function Todolist(props: PropsType) {
 
   return (
     <div>
-      <h3><EditableSpan title={props.title}  onChange={changeTodolistTitle}/>
-      <button onClick={removeTodolist}>x</button>
+      <h3><EditableSpan title={props.title} onChange={changeTodolistTitle} />
+        <IconButton onClick={removeTodolist}><Delete /></IconButton>
       </h3>
       <AddItemForm addItem={addTask} />
-      <ul>
+      <div>
         {props.tasks.map((t) => {
           //Логическая функция-обработчик события нажатия на "х"(удаления) внутри map
           const onRemoveHandler = () => props.removeTask(t.id, props.id);
@@ -57,26 +59,26 @@ export function Todolist(props: PropsType) {
             props.changeTaskStatus(t.id, e.currentTarget.checked, props.id)
           }
 
-          const onChangeTitleHandler = (newValue:string) => {
+          const onChangeTitleHandler = (newValue: string) => {
             props.changeTaskTitle(t.id, newValue, props.id)
           }
 
           return (
-            <li key={t.id} className={t.isDone ? s.isdone : ''}>
-              <input type="checkbox"
+            <div key={t.id} className={t.isDone ? s.isdone : ''}>
+              <Checkbox 
                 checked={t.isDone}
                 onChange={onChangeStatusHandler} />
-              
-              <EditableSpan title={t.title}  onChange={onChangeTitleHandler}/>
-              <button onClick={onRemoveHandler}>x</button>
-            </li>
+
+              <EditableSpan title={t.title} onChange={onChangeTitleHandler} />
+              <IconButton onClick={onRemoveHandler}> <Delete /> </IconButton>
+            </div>
           );
         })}
-      </ul>
+      </div>
       <div>
-        <button className={props.filter === 'All' ? s.activefilter : ''} onClick={onAllClickHandler}>All</button>
-        <button className={props.filter === 'Active' ? s.activefilter : ''} onClick={onActiveClickHandler}>Active</button>
-        <button className={props.filter === 'Completed' ? s.activefilter : ''} onClick={onCompletedAllClickHandler}>Completed</button>
+        <Button variant = {props.filter === 'All' ? 'contained' : 'text'} onClick={onAllClickHandler}>All</Button>
+        <Button color={"primary"} variant={props.filter === 'Active' ? 'contained' : 'text'} onClick={onActiveClickHandler}>Active</Button>
+        <Button color={"secondary"} variant={props.filter === 'Completed' ? 'contained' : 'text'} onClick={onCompletedAllClickHandler}>Completed</Button>
       </div>
     </div>
   );
