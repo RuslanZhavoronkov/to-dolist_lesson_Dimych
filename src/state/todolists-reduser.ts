@@ -11,7 +11,7 @@ export const todolistsReducer = (state: TodolistType[], action: ActionsTypes): T
             return state.filter(el => el.id !== action.payload.id);
         }
         case "ADD-TODOLIST": {
-            return [...state, { id: v1(), title: action.payload.title, filter: 'All' }]
+            return [...state, { id: action.payload.id, title: action.payload.title, filter: 'All' }]
         }
         case "CHANGE-TODOLIST_TITLE": {
             return state.map(el => el.id === action.payload.id ? { ...el, title: action.payload.title } : el);
@@ -41,7 +41,8 @@ export const addTodolistAC = (title:string) => {
     return {
         type: "ADD-TODOLIST",
         payload:{
-            title
+            title,
+            id:v1()
         }
     } as const
 }
@@ -69,7 +70,7 @@ export const changeTodolistFilterAC = (id: string, filter: FilterValuesType) => 
 
 //Пропишем типизацию автоматов(типы возвращенных, функциями значений) для функции action-create
 
-type RemoveTodolistACType = ReturnType <typeof removeTodolistAC>
-type AddTodolistACType = ReturnType <typeof  addTodolistAC>
+export type RemoveTodolistACType = ReturnType <typeof removeTodolistAC>
+export type AddTodolistACType = ReturnType <typeof  addTodolistAC>
 type ChangeTodolistTitleACType = ReturnType <typeof changeTodolistTitleAC>
 type ChangeTodolistFilterACType = ReturnType <typeof changeTodolistFilterAC>
