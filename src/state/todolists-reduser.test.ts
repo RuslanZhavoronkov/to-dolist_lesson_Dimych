@@ -41,8 +41,8 @@ test('correct todolist should be added', () => {
     const endState = todolistsReducer(startState, addTodolistAC(newTodolistTitle))
 
     expect(endState.length).toBe(3)
-    expect(endState[2].title).toBe(newTodolistTitle)
-    expect(endState[2].filter).toBe('All')
+    expect(endState[0].title).toBe(newTodolistTitle)
+    expect(endState[0].filter).toBe('All')
 })
 
 
@@ -91,7 +91,7 @@ test('correct filter of todolist should changed', () => {
     // }
 
 
-    const endState = todolistsReducer(startState, changeTodolistFilterAC(todolistId2, newFilter))
+    const endState = todolistsReducer(startState, changeTodolistFilterAC( newFilter,todolistId2))
 
     expect(endState[0].filter).toBe('All')
     expect(endState[1].filter).toBe('Completed')
