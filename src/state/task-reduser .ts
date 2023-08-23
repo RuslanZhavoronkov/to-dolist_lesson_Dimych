@@ -1,6 +1,6 @@
 import { v1 } from "uuid"
-import { TaskStateType } from "../App"
-import { AddTodolistACType, RemoveTodolistACType } from "./todolists-reduser"
+import { TaskStateType } from "../AppWithRedux"
+import { AddTodolistACType, RemoveTodolistACType, todoListId1, todoListId2 } from "./todolists-reduser"
 
 // Типизация action, возвращенного функцией action-create
 type RemoveTaskACType = ReturnType<typeof removeTaskAC>
@@ -11,7 +11,21 @@ type ChangeTitleTaskACType = ReturnType<typeof changeTitleTaskAC>
 
 type ActionType = RemoveTaskACType | AddTaskACType | ChangeStatusACType | ChangeTitleTaskACType | AddTodolistACType | RemoveTodolistACType
 
-export const taskReducer = (state: TaskStateType, action: ActionType): TaskStateType => {
+const initialState: TaskStateType = {
+    [todoListId1]: [
+      { id: v1(), title: "HTML&CSS", isDone: true },
+      { id: v1(), title: "JS", isDone: true },
+      { id: v1(), title: "ReactJS", isDone: false },
+      { id: v1(), title: "Rest API", isDone: false },
+      { id: v1(), title: "GraphQL", isDone: false }
+    ],
+    [todoListId2]: [
+      { id: v1(), title: "Book", isDone: false },
+      { id: v1(), title: "Milk", isDone: true },
+    ]
+  }
+
+export const taskReducer = (state: TaskStateType = initialState, action: ActionType): TaskStateType => {
     switch (action.type) {
         case 'REMOVE-TASK': {
             return { ...state, [action.payload.todoListId]: 
@@ -47,7 +61,7 @@ export const taskReducer = (state: TaskStateType, action: ActionType): TaskState
         }
 
         default:
-            return state
+            return state;
     }
 }
 
