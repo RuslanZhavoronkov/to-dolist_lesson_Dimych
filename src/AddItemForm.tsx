@@ -1,63 +1,47 @@
-import { ChangeEvent, useState, KeyboardEvent } from "react";
-import s from './Todolist.module.css'
-import { Button, IconButton, TextField } from "@material-ui/core";
-import { ControlPoint } from "@material-ui/icons";
-
+import TextField from '@mui/material/TextField/TextField';
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import {IconButton} from "@mui/material";
+import {AddBox} from "@mui/icons-material";
 
 type AddItemFormPropsType = {
-  addItem: (title: string) => void
-
-
+    addItem: (title: string) => void
 }
 
-export const AddItemForm: React.FC<AddItemFormPropsType> = (props) => {
+export function AddItemForm(props: AddItemFormPropsType) {
+    let [title, setTitle] = useState("")
+    let [error, setError] = useState<string | null>(null)
 
-  const [newTaskTitle, setNewTaskTitle] = useState("");
-  const [error, setError] = useState<string | null>(null);
-
-
-  //логическая функция-обработчик введенного текста в Input
-  const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setNewTaskTitle(e.currentTarget.value);
-  };
-
-  //логическая функция обработчик нажатия Enter+Сtrl в Input
-  const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-    setError(null);
-    if (e.ctrlKey && e.key === "Enter") {
-      props.addItem(newTaskTitle);
-      setNewTaskTitle("");
-    }
-  };
-
-  //логическая функция-обработчик добавления новой таски в массив
-  const addTask = () => {
-    if (newTaskTitle.trim() !== '') {// если введеная строка пустая выйти из функции
-      props.addItem(newTaskTitle);
-      setNewTaskTitle("");
-    } else {
-      setError('Title is requaired');
+    const addItem = () => {
+        if (title.trim() !== "") {
+            props.addItem(title);
+            setTitle("");
+        } else {
+            setError("Title is required");
+        }
     }
 
-  };
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setTitle(e.currentTarget.value)
+    }
 
-  return (
-    <div>
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        setError(null);
+        if (e.charCode === 13) {
+            addItem();
+        }
+    }
 
-      <TextField
-        variant={"outlined"}
-        label={"Type value"}
-        value={newTaskTitle}
-        onChange={onNewTitleChangeHandler}
-        onKeyDown={onKeyPressHandler}
-        error={!!error}
-        helperText={error}
-      />{" "}
-
-
-      {/*начальное значение поле ввода input*/}
-      <IconButton onClick={addTask} color={"primary"}><ControlPoint/></IconButton>
-      {/* {error && <div className={s.errormessage}>{error}</div>} */}
+    return <div>
+        <TextField variant="outlined"
+                   error={!!error}
+                   value={title}
+                   onChange={onChangeHandler}
+                   onKeyPress={onKeyPressHandler}
+                   label="Title"
+                   helperText={error}
+        />
+        <IconButton color="primary" onClick={addItem}>
+            <AddBox />
+        </IconButton>
     </div>
-  )
 }
